@@ -20,15 +20,23 @@ import com.jme3.ui.Picture;
 public class Ship {
 
     private SimpleApplication app;
-    // Ship Variables
-    float warp, impulse, shipHeading, shipTurnTo, shipTurnSpeed, shipTurn,
-	    shipSpeed, shipMaxSpeed, shipWidth, shipHeight;
-    int sensordistance;
-    Boolean turnClock, shieldsUp;
+    // Helm Image Vars
+    float shipWidth, shipHeight;
     Picture shipImg;
+    // Movement Vars
     Node pivot;
     Vector2f location;
+    float warp, impulse, shipHeading, shipTurnTo, shipTurnSpeed, shipTurn,
+	    shipSpeed, shipMaxSpeed;
+    Boolean turnClock;
+    // Sensor Vars
+    int sensordistance;
     BoundingSphere sensorSphere;
+    // Energy Vars
+    float energy;
+    
+    // State Vars
+    Boolean shieldsUp;
 
     public Ship(SimpleApplication app) {
 	this.app = app;
