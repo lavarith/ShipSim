@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+     <!-- HELM SCREEN -->
+    <screen id="helm" controller="client.Helm">
+        <layer id="background" childLayout="center">
+            
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="panel_top" height="10%" width="100%" childLayout="horizontal" backgroundColor="#000"></panel>
+            <panel id="panel_bottom" height="90%" width="100%" childLayout="horizontal">
+                <panel id="panel_left" height="100%" width="20%" childLayout="vertical" backgroundColor="#000">
+                    <panel id="shipstatus" height="40%" width="100%"></panel>
+                    <panel id="drive" height="60%" width="100%" childLayout="vertical">
+                        <panel id="sliders" height="80%" width="30%" childLayout="horizontal">
+                            <panel id="spacer1" width="20%" height="100%"/>
+			    <panel id="warpBox" width="40%" height="100%" childLayout="vertical" align="center">
+                                <control id="warpSlide" name="verticalSlider" height="90%" align="center" 
+                                     min="0" max="9" buttonStepSize="0.5" initial="9" stepSize="0.0001"/>
+				     <control id="warpText" name="label" width="100%" height="10%" text="0.0" align="center"/>
+			    </panel>
+			    <panel id="impulseBox" width="40%" height="100%" childLayout="vertical" align="center">
+	                        <control id="impulseSlide" name="verticalSlider" width="70%" height="90%" align="center" initial="100.0"/>
+				<control  id="impulseText" name="label" width="100%" height="10%" text="0" align="center"/>
+			    </panel>
+                        </panel>
+			<panel id="allstopBox" width="30%" height="10%" childLayout="horizontal">
+			    <panel id="spacer2" width="20%" height="100%"/>
+			    <control id="allStopButton" name="button" label="All Stop" width="80%" height="100%">
+				<interact onClick="onAllStopClick()"/>
+			    </control>
+			</panel>
+                    </panel>
+                </panel>
+                <panel id="panel_mid" height="100%" width="60%" childLayout="center">
+		</panel>
+                <panel id="panel_right" height="100%" width="20%" childLayout="vertical" backgroundColor="#000"></panel>
+            </panel>
+        </layer>
+    </screen>
+    <!-- END HELM SCREEN -->
+</nifty>
