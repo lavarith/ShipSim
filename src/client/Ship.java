@@ -39,9 +39,9 @@ public class Ship {
     // Energy Vars
     float energyCurrent, energyFull;
     DecimalFormat dformat = new DecimalFormat("#.##");
-    // Shield Vars
+    // Shield/Hull Vars
     Boolean shieldsUp;
-    float shieldCurrent, shieldFull;
+    float frontshieldCurrent, frontshieldFull, rearshieldCurrent, rearshieldFull, hullCurrent, hullFull;
 
     public Ship(SimpleApplication app) {
 	this.app = app;
@@ -71,19 +71,25 @@ public class Ship {
 	sensorSphere = new BoundingSphere(sensordistance, new Vector3f(location.x, location.y, 0));
 	
 	// Energy details
-	energyFull = 10000;
+	energyFull = 1000;
 	energyCurrent = energyFull;
 	
-	// Shields details
+	// Shields and Hull details
 	shieldsUp = false;
-	shieldFull = 10000;
-	shieldCurrent = shieldFull;
+	frontshieldFull = 100;
+	frontshieldCurrent = frontshieldFull;
+	rearshieldFull = 100;
+	rearshieldCurrent = rearshieldFull;
+	hullFull = 100;
+	hullCurrent = hullFull;
 	
     }
     public void update(Screen screen){
 	this.screen = screen;
 	this.screen.findElementByName("energycurrent").getRenderer(TextRenderer.class).setText(Float.toString(energyCurrent));
-	this.screen.findElementByName("shieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(shieldCurrent/shieldFull*100));
+	this.screen.findElementByName("frontshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(frontshieldCurrent/frontshieldFull*100));
+	this.screen.findElementByName("rearshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(rearshieldCurrent/rearshieldFull*100));
+	this.screen.findElementByName("hullcurrent").getRenderer(TextRenderer.class).setText(Float.toString(hullCurrent/hullFull*100));
     }
 
     public void move(float tpf) {

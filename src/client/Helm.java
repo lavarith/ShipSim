@@ -48,7 +48,6 @@ public class Helm extends AbstractAppState implements ScreenController {
 
     public Helm(SimpleApplication app) {
 	this.app = app;
-
 	screenWidth = this.app.getContext().getSettings().getWidth();
 	screenHeight = this.app.getContext().getSettings().getHeight();
 
@@ -58,7 +57,7 @@ public class Helm extends AbstractAppState implements ScreenController {
 	helmDirection.setPosition(0, 0);
 
 	ship = new Ship(this.app);
-	planet = new Planet(this.app, new Vector2f(200,200), 100);
+	planet = new Planet(this.app, new Vector2f(200, 200), 100);
     }
 
     @Override
@@ -74,15 +73,18 @@ public class Helm extends AbstractAppState implements ScreenController {
     }
 
     public void onStartScreen() {
+	// Remove random colorization for nifty gui
+	this.nifty.setDebugOptionPanelColors(false);
+
 	//throw new UnsupportedOperationException("Not supported yet.");
 	topHeight = nifty.getCurrentScreen().findElementByName("panel_top").getHeight();
 
 	// Set Helm Ticks Info
 	midPanel = nifty.getCurrentScreen().findElementByName("panel_mid");
-	float helmWidth = midPanel.getHeight()/helmDirection.getLocalScale().y * helmDirection.getLocalScale().x;
+	float helmWidth = midPanel.getHeight() / helmDirection.getLocalScale().y * helmDirection.getLocalScale().x;
 	helmDirection.setHeight(midPanel.getHeight());
 	helmDirection.setWidth(helmWidth);
-	helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth)/2, midPanel.getY() - topHeight);
+	helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY() - topHeight);
 
 	// Add middle panel pivot point
 	pivot = ship.getPivot();
@@ -99,19 +101,19 @@ public class Helm extends AbstractAppState implements ScreenController {
 	 * jME update loop!
 	 */
 	ship.move(tpf);
-	
+
 	// Draw planet if it's close enough
-	if(planet.isOnSensors(ship.getSensorSphere(), ship.getLocation())){
+	if (planet.isOnSensors(ship.getSensorSphere(), ship.getLocation())) {
 	    planet.drawPlanet(ship.getLocation(), planet.getPivot());
-	}else{
+	} else {
 	    planet.getPivot().detachAllChildren();
 	}
-	
+
 	// Display the compass node over everything
 	this.app.getGuiNode().attachChild(helmDirection);
 	pivot.attachChild(ship.getShipImg());
 	this.app.getGuiNode().attachChild(pivot);
-	
+
 	// Updates ship components
 	ship.update(screen);
     }

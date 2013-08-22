@@ -14,13 +14,18 @@
 	    <panel id="panel_bottom" height="90%" width="100%" childLayout="horizontal">
 		<panel id="panel_left" height="100%" width="20%" childLayout="vertical" backgroundColor="#000">
 		    <panel id="shipstatus" height="40%" width="100%" childLayout="horizontal">
-			<panel id="status_left" height="100%" width="50%" childLayout="vertical">
-			    <text text="Energy" font="Interface/Fonts/Default.fnt" width="100%" height="10%" />
-			    <text text="Shields" font="Interface/Fonts/Default.fnt" width="100%" height="10%" />
+			<panel id="status_spacer" height="100%" width="10%" childLayout="vertical"></panel>
+			<panel id="status_left" height="100%" width="40%" childLayout="vertical">
+			    <text text="Front Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			    <text text="Rear Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			    <text text="Hull" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			    <text text="Energy" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
 			</panel>
 			<panel id="status_right" height="100%" width="50%" childLayout="vertical" >
-			    <control  id="energycurrent" name="label" height="10%" width="100%" text="0" textHAlign="left" />
-			    <control  id="shieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			    <control  id="frontshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			    <control  id="rearshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			    <control  id="hullcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			    <control  id="energycurrent" name="label" height="10%" width="100%" textHAlign="left" />
 			</panel>
 		    </panel>
 		    <panel id="drive" height="60%" width="100%" childLayout="vertical">
@@ -28,7 +33,7 @@
 			    <panel id="spacer1" width="20%" height="100%"/>
 			    <panel id="warpBox" width="40%" height="100%" childLayout="vertical" align="center">
 				<control id="warpSlide" name="verticalSlider" height="90%" align="center" 
-					 min="0" max="9" buttonStepSize="0.5" initial="9" stepSize="0.0001"/>
+					     min="0" max="9" buttonStepSize="0.5" initial="9" stepSize="0.0001"/>
 				<control id="warpText" name="label" width="100%" height="10%" text="0.0" align="center"/>
 			    </panel>
 			    <panel id="impulseBox" width="40%" height="100%" childLayout="vertical" align="center">

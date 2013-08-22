@@ -10,7 +10,6 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
@@ -36,7 +35,7 @@ public class Planet {
 	pivot = new Node("Planet");
 	pivot.setLocalTranslation(this.app.getContext().getSettings().getWidth() / 2, this.app.getContext().getSettings().getHeight() / 2, 0);
 
-	circle = new Sphere(3, 100, this.radius);
+	circle = new Sphere(100, 100, this.radius);
 	sphereGeo = new Geometry("Planet", circle);
 	Material circleMat = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 	circleMat.setColor("Color", ColorRGBA.Blue);
@@ -59,13 +58,6 @@ public class Planet {
 	pivot.attachChild(sphereGeo);
     }
 
-//    public boolean isOnSensors(Vector2f shipLocation, float sensorRange) {
-//	if (position.distance(shipLocation) <= sensorRange) {
-//	    return true;
-//	}else{
-//	    return false;
-//	}
-//    }
     public boolean isOnSensors(BoundingSphere shipSensors, Vector2f shipLocation) {
 	Sphere circle2 = new Sphere(100,100,100);
 	Geometry sphereGeo2 = new Geometry("Planet 2", circle2);
