@@ -33,8 +33,7 @@ public class Ship {
     int sensordistance;
     BoundingSphere sensorSphere;
     // Energy Vars
-    float energy;
-    
+    float energyCurrent, energyFull;
     // State Vars
     Boolean shieldsUp;
 
@@ -50,8 +49,13 @@ public class Ship {
 	shipTurnSpeed = 100;
 	shipTurn = 0;
 	turnClock = true;
+	pivot = new Node("pivot");
+	location = new Vector2f(0, 0);
+	
+	// Ship State Details
 	shieldsUp = false;
 
+	// Helm image Details
 	shipImg = new Picture("Ship Helm");
 	shipImg.setImage(this.app.getAssetManager(), "Images/shipHelm.png", true);
 	shipImg.setPosition(0, 0);
@@ -59,12 +63,13 @@ public class Ship {
 	shipImg.setWidth(shipHeight);
 	shipImg.setLocalTranslation(-shipWidth / 2, -shipHeight / 2, 0);   // center image on pivot point
 
-	pivot = new Node("pivot");
-	location = new Vector2f(0, 0);
-
 	// ship Sensor details
 	sensordistance = 300;
 	sensorSphere = new BoundingSphere(sensordistance, new Vector3f(location.x, location.y, 0));
+	
+	// Energy details
+	energyFull = 10000;
+	energyCurrent = energyFull;
     }
 
     public void move(float tpf) {
