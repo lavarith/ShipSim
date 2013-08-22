@@ -111,6 +111,9 @@ public class Helm extends AbstractAppState implements ScreenController {
 	this.app.getGuiNode().attachChild(helmDirection);
 	pivot.attachChild(ship.getShipImg());
 	this.app.getGuiNode().attachChild(pivot);
+	
+	// Updates ship components
+	ship.update(screen);
     }
 
     public void getRotateLocation() {

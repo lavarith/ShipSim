@@ -49,7 +49,7 @@ public class Game extends SimpleApplication {
 		assetManager, inputManager, audioRenderer, guiViewPort);
 	Nifty nifty = niftyDisplay.getNifty();
 	// Turn on/off random color panels
-	//nifty.setDebugOptionPanelColors(true);
+	nifty.setDebugOptionPanelColors(true);
 
 	// Set the first screen to the "start" screen
 	StartScreen startScreen = new StartScreen(this);

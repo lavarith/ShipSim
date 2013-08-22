@@ -12,6 +12,9 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
+import de.lessvoid.nifty.elements.render.TextRenderer;
+import de.lessvoid.nifty.screen.Screen;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -20,6 +23,7 @@ import com.jme3.ui.Picture;
 public class Ship {
 
     private SimpleApplication app;
+    private Screen screen;
     // Helm Image Vars
     float shipWidth, shipHeight;
     Picture shipImg;
@@ -34,8 +38,10 @@ public class Ship {
     BoundingSphere sensorSphere;
     // Energy Vars
     float energyCurrent, energyFull;
-    // State Vars
+    DecimalFormat dformat = new DecimalFormat("#.##");
+    // Shield Vars
     Boolean shieldsUp;
+    float shieldCurrent, shieldFull;
 
     public Ship(SimpleApplication app) {
 	this.app = app;
@@ -51,9 +57,6 @@ public class Ship {
 	turnClock = true;
 	pivot = new Node("pivot");
 	location = new Vector2f(0, 0);
-	
-	// Ship State Details
-	shieldsUp = false;
 
 	// Helm image Details
 	shipImg = new Picture("Ship Helm");
@@ -70,6 +73,17 @@ public class Ship {
 	// Energy details
 	energyFull = 10000;
 	energyCurrent = energyFull;
+	
+	// Shields details
+	shieldsUp = false;
+	shieldFull = 10000;
+	shieldCurrent = shieldFull;
+	
+    }
+    public void update(Screen screen){
+	this.screen = screen;
+	this.screen.findElementByName("energycurrent").getRenderer(TextRenderer.class).setText(Float.toString(energyCurrent));
+	this.screen.findElementByName("shieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(shieldCurrent/shieldFull*100));
     }
 
     public void move(float tpf) {
