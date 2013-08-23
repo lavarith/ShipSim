@@ -31,7 +31,7 @@ import java.text.DecimalFormat;
  *
  * @author Tony
  */
-public class Helm extends AbstractAppState implements ScreenController {
+public class HelmScreen extends AbstractAppState implements ScreenController {
 
     private SimpleApplication app;
     private Nifty nifty;
@@ -46,7 +46,7 @@ public class Helm extends AbstractAppState implements ScreenController {
     Ship ship;
     Planet planet;
 
-    public Helm(SimpleApplication app) {
+    public HelmScreen(SimpleApplication app) {
 	this.app = app;
 	screenWidth = this.app.getContext().getSettings().getWidth();
 	screenHeight = this.app.getContext().getSettings().getHeight();

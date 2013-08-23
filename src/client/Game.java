@@ -31,10 +31,11 @@ import server.ServerMain;
 public class Game extends SimpleApplication {
 
     Float islideY, wslideY;
+    Nifty nifty;
 
     public static void main(String[] args) {
 	Game app = new Game();
-	
+
 	AppSettings settings = new AppSettings(true);
 	settings.setResolution(1280, 720);		// Resolution
 	settings.setTitle("Ship Simulator");		// Game Title
@@ -57,17 +58,18 @@ public class Game extends SimpleApplication {
 	// Load the GUI
 	NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
 		assetManager, inputManager, audioRenderer, guiViewPort);
-	Nifty nifty = niftyDisplay.getNifty();
+	nifty = niftyDisplay.getNifty();
 	// Turn on/off random color panels
 	nifty.setDebugOptionPanelColors(true);
 
-	// Set the first screen to the "start" screen
+	// Start Screen Controls
 	StartScreen startScreen = new StartScreen(this);
 	nifty.registerScreenController(startScreen);
 	nifty.addXml("Interface/StartScreen.xml");
+	nifty.addXml("Interface/ConnectScreen.xml");
 	nifty.gotoScreen("start");
 	stateManager.attach(startScreen);
-
+	
 	guiViewPort.attachScene(guiNode);
 	guiNode.setQueueBucket(Bucket.Gui);
 
