@@ -21,17 +21,17 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Nifty nifty;
     private Screen screen;
     private SimpleApplication app;
-    Helm helmControl;
+    ConnectScreen connectControl;
 
     public StartScreen(SimpleApplication app) {
 	this.app = app;
     }
 
     public void startGame(String screen) {
-	helmControl = new Helm(this.app);
-	nifty.registerScreenController(helmControl);
-	nifty.addXml("Interface/HelmScreen.xml");
-	this.app.getStateManager().attach(helmControl);
+	connectControl = new ConnectScreen(this.app);
+	nifty.registerScreenController(connectControl);
+	nifty.addXml("Interface/ConnectScreen.xml");
+	this.app.getStateManager().attach(connectControl);
 	nifty.gotoScreen(screen);
     }
 
