@@ -30,12 +30,9 @@ import server.ServerMain;
  */
 public class Game extends SimpleApplication {
 
-    private Client client;
     Float islideY, wslideY;
-    private ConcurrentLinkedQueue<String> messageQueue;
 
     public static void main(String[] args) {
-	UtNetworking.initializables();
 	Game app = new Game();
 	
 	AppSettings settings = new AppSettings(true);
@@ -55,15 +52,6 @@ public class Game extends SimpleApplication {
     // Initialize the application
     @Override
     public void simpleInitApp() {
-	messageQueue = new ConcurrentLinkedQueue<String>();
-	try {
-	    client = Network.connectToServer("127.0.0.1", UtNetworking.PORT);
-	    client.start();
-	} catch (IOException ex) {
-	    com.sun.istack.internal.logging.Logger.getLogger(ServerMain.class).log(Level.SEVERE, null, ex);
-	}
-	
-	
 	flyCam.setEnabled(false);   // turns off the silly cam follow
 
 	// Load the GUI
@@ -98,22 +86,5 @@ public class Game extends SimpleApplication {
 
     @Override
     public void simpleRender(RenderManager rm) {
-    }
-    
-    private class NetworkMessageListener implements MessageListener<Client>{
-
-	public void messageReceived(Client source, Message m) {
-	    if(m instanceof NetworkMessage){
-		NetworkMessage message = (NetworkMessage) m;
-		messageQueue.add(message.getMessage());
-	    }
-	}
-	
-    }
-    
-    @Override
-    public void destroy(){
-	client.close();
-	super.destroy();
     }
 }
