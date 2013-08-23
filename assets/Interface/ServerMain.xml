@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Server Screen -->
+    <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <screen id="serverMain" controller="server.ServerController">
+	<layer id="foreground" backgroundColor="#0000ff" childLayout="center">
+	    <panel id="panel" height="100%" width="100%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+		<text id="text" font="Interface/Fonts/Default.fnt" color="#000f" text="Hello Server!" align="center" valign="center" />
+	    </panel>
+	</layer>
+    </screen>
+</nifty>

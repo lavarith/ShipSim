@@ -4,13 +4,7 @@
  */
 package client;
 
-import Utilities.UtNetworking;
-import Utilities.UtNetworking.NetworkMessage;
 import com.jme3.app.SimpleApplication;
-import com.jme3.network.Client;
-import com.jme3.network.Message;
-import com.jme3.network.MessageListener;
-import com.jme3.network.Network;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
@@ -19,10 +13,8 @@ import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import server.ServerMain;
 
 /**
  *
@@ -32,6 +24,7 @@ public class Game extends SimpleApplication {
 
     Float islideY, wslideY;
     Nifty nifty;
+    StartScreen startScreen;
 
     public static void main(String[] args) {
 	Game app = new Game();
@@ -63,13 +56,14 @@ public class Game extends SimpleApplication {
 	nifty.setDebugOptionPanelColors(true);
 
 	// Start Screen Controls
-	StartScreen startScreen = new StartScreen(this);
+	startScreen = new StartScreen(this);
 	nifty.registerScreenController(startScreen);
 	nifty.addXml("Interface/StartScreen.xml");
 	nifty.addXml("Interface/ConnectScreen.xml");
+	nifty.addXml("Interface/LaunchScreen.xml");
 	nifty.gotoScreen("start");
 	stateManager.attach(startScreen);
-	
+
 	guiViewPort.attachScene(guiNode);
 	guiNode.setQueueBucket(Bucket.Gui);
 
@@ -83,10 +77,19 @@ public class Game extends SimpleApplication {
     /* Use the main event loop to trigger repeating actions. */
     @Override
     public void simpleUpdate(float tpf) {
-	fpsText.setText(INPUT_MAPPING_EXIT);
     }
 
     @Override
     public void simpleRender(RenderManager rm) {
+    }
+
+    @Override
+    public void destroy() {
+	if(startScreen.client!=null){
+	    if(startScreen.client.isConnected()){
+		startScreen.client.close();
+	    }
+	}
+	super.destroy();
     }
 }

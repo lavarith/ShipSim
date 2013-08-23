@@ -40,6 +40,9 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	connectCounter = 0;
     }
 
+    public static void main(String[] args) {
+    }
+
     // Switch to a particular Screen
     public void gotoScreen(String gotoScreen) {
 	System.out.println("Going to " + gotoScreen + "!");
@@ -52,25 +55,22 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     public void connectToServer() {
-	connectCounter++;
-	TextField ServerIPField = screen.findNiftyControl("serverIP", TextField.class);
+	TextField serverIPField = screen.findNiftyControl("serverIP", TextField.class);
 	Label connectError = screen.findNiftyControl("connectError", Label.class);
 	connectError.setText("");
 	UtNetworking.initializables();
 	messageQueue = new ConcurrentLinkedQueue<String>();
 	try {
-	    client = Network.connectToServer(ServerIPField.getText(), UtNetworking.PORT);
-	    if(client.isConnected()){
-		nifty.gotoScreen("launchScreen");
-	    }else{
-		// Rejected by the server;
-	    }
+	    client = Network.connectToServer(serverIPField.getText(), UtNetworking.PORT);
+	    //client = Network.connectToServer(serverIPField.getText(), UtNetworking.PORT);
+	    client.start();
+	    gotoScreen("launchScreen");
 	} catch (IOException ex) {
+	    connectCounter++;
 	    connectError.setText("Could not connect to server " + connectCounter + " times.");
 	    com.sun.istack.internal.logging.Logger.getLogger(ServerMain.class).log(Level.SEVERE, null, ex);
 	}
     }
-    
 
     public void bind(Nifty nifty, Screen screen) {
 	this.nifty = nifty;
@@ -78,6 +78,11 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     public void onStartScreen() {
+	if (client != null) {
+	    if (client.isConnected()) {
+		client.close();
+	    }
+	}
     }
 
     public void onEndScreen() {
@@ -87,6 +92,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void initialize(AppStateManager stateManager, Application app) {
 	super.initialize(stateManager, app);
 	this.app = (SimpleApplication) app;
+
     }
 
     @Override
