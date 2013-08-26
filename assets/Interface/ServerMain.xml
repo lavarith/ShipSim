@@ -3,10 +3,12 @@
     <!-- +++++++++++++++++++++++++++++++++++++++ -->
     <!-- Server Screen -->
     <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
     <screen id="serverMain" controller="server.ServerController">
-	<layer id="foreground" backgroundColor="#0000ff" childLayout="center">
-	    <panel id="panel" height="100%" width="100%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
-		<text id="text" font="Interface/Fonts/Default.fnt" color="#000f" text="Hello Server!" align="center" valign="center" />
+	<layer id="foreground" backgroundColor="#000" childLayout="vertical">
+	    <panel id="panel" height="95%" width="95%" align="center" valign="center" childLayout="center" visibleToMouse="false" backgroundColor="#fff">
+		<control type="listBox" id="listBox" horizontal="off" displayItems="15" width="100%" height="500px" childLayout="vertical" visibleToMouse="false"/>
 	    </panel>
 	</layer>
     </screen>

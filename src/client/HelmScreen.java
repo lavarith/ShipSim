@@ -97,9 +97,6 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
 
     @Override
     public void update(float tpf) {
-	/**
-	 * jME update loop!
-	 */
 	ship.move(tpf);
 
 	// Draw planet if it's close enough

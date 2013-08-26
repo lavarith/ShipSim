@@ -5,7 +5,7 @@
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
     <!-- CONNECT MENU SCREEN -->
-    <screen id="connectScreen" controller="client.StartScreen">
+    <screen id="settingsScreen" controller="client.StartScreen">
 	<layer id="background" backgroundColor="#333" childLayout="center">
             
 	</layer>
@@ -15,20 +15,13 @@
 	    </panel>
 	    <panel id="panel_mid" height="50%" width="75%" align="center" childLayout="center">
 		<panel id="connectBox" height="20%" width="40%" childLayout="vertical">   
-		    <text text="Server URL:" font="Interface/Fonts/Default.fnt" width="100%" height="10%" wrap="true" textHAlign="left"/>
-		    <panel id="connectBox" height="70%" width="100%" childLayout="horizontal">
-			<control name="textfield" id="serverIP" maxLength="256" width="80%" height="100%" size="1000"></control>
-			<control name="button" label="Connect" id="ServerConnect" align="center" valign="center"  width="20%" height="100%">
-			    <interact onClick="connectToServer()"/>
-			</control>
-		    </panel>
-		    <control name="label" id="connectError" height="20%" width="100%"></control>
+		    <text text="Settings Info" font="Interface/Fonts/Default.fnt" width="100%" height="10%" wrap="true" textHAlign="center"/>
 		</panel>
 	    </panel>
 	    <panel id="panel_bottom" height="25%" width="75%" align="center" childLayout="horizontal">
 		<panel id="panel_bottom_left" height="100%" width="50%" valign="center" childLayout="center">  
 		    <control name="button" label="Back" id="BackButton" align="center" valign="center">
-			<interact onClick="gotoScreen(start)"/>
+			<interact onClick="gotoScreen(connectScreen)"/>
 		    </control>
 		</panel>
 		<panel id="panel_bottom_right" height="100%" width="50%" valign="center" childLayout="center">  

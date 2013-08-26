@@ -17,9 +17,8 @@ import de.lessvoid.nifty.screen.Screen;
 import java.text.DecimalFormat;
 
 /**
- *
  * @author Tony
- */
+**/
 public class Ship {
 
     private SimpleApplication app;
@@ -27,6 +26,8 @@ public class Ship {
     // Helm Image Vars
     float shipWidth, shipHeight;
     Picture shipImg;
+    //Ship Details
+    String shipName;
     // Movement Vars
     Node pivot;
     Vector2f location;
@@ -69,11 +70,11 @@ public class Ship {
 	// ship Sensor details
 	sensordistance = 300;
 	sensorSphere = new BoundingSphere(sensordistance, new Vector3f(location.x, location.y, 0));
-	
+
 	// Energy details
 	energyFull = 1000;
 	energyCurrent = energyFull;
-	
+
 	// Shields and Hull details
 	shieldsUp = false;
 	frontshieldFull = 100;
@@ -82,14 +83,15 @@ public class Ship {
 	rearshieldCurrent = rearshieldFull;
 	hullFull = 100;
 	hullCurrent = hullFull;
-	
+
     }
-    public void update(Screen screen){
+
+    public void update(Screen screen) {
 	this.screen = screen;
 	this.screen.findElementByName("energycurrent").getRenderer(TextRenderer.class).setText(Float.toString(energyCurrent));
-	this.screen.findElementByName("frontshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(frontshieldCurrent/frontshieldFull*100));
-	this.screen.findElementByName("rearshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(rearshieldCurrent/rearshieldFull*100));
-	this.screen.findElementByName("hullcurrent").getRenderer(TextRenderer.class).setText(Float.toString(hullCurrent/hullFull*100));
+	this.screen.findElementByName("frontshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(frontshieldCurrent / frontshieldFull * 100));
+	this.screen.findElementByName("rearshieldcurrent").getRenderer(TextRenderer.class).setText(Float.toString(rearshieldCurrent / rearshieldFull * 100));
+	this.screen.findElementByName("hullcurrent").getRenderer(TextRenderer.class).setText(Float.toString(hullCurrent / hullFull * 100));
     }
 
     public void move(float tpf) {
@@ -212,5 +214,13 @@ public class Ship {
 
     public void setShieldsUp(Boolean shieldsUp) {
 	this.shieldsUp = shieldsUp;
+    }
+
+    public String getShipName() {
+	return shipName;
+    }
+
+    public void setShipName(String shipName) {
+	this.shipName = shipName;
     }
 }

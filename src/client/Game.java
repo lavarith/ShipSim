@@ -12,12 +12,10 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Tony
  */
 public class Game extends SimpleApplication {
@@ -61,7 +59,8 @@ public class Game extends SimpleApplication {
 	nifty.addXml("Interface/StartScreen.xml");
 	nifty.addXml("Interface/ConnectScreen.xml");
 	nifty.addXml("Interface/LaunchScreen.xml");
-	nifty.gotoScreen("start");
+	nifty.addXml("Interface/SettingsScreen.xml");
+	nifty.gotoScreen("start"); // default: "start" 
 	stateManager.attach(startScreen);
 
 	guiViewPort.attachScene(guiNode);
@@ -71,7 +70,6 @@ public class Game extends SimpleApplication {
 	ViewPort guiViewPort2 = renderManager.createPostView("Gui 2 Default", guiCam);
 	guiViewPort2.addProcessor(niftyDisplay);
 	guiViewPort2.setClearFlags(false, false, false);
-	//guiViewPort.addProcessor(niftyDisplay);
     }
 
     /* Use the main event loop to trigger repeating actions. */

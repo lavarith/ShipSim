@@ -4,15 +4,11 @@
  */
 package server;
 
-import Utilities.UtNetworking;
-import client.StartScreen;
+import networking.UtNetworking;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.niftygui.NiftyJmeDisplay;
-import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import com.sun.istack.internal.logging.Logger;
@@ -48,7 +44,6 @@ public class ServerMain extends SimpleApplication implements ScreenController{
 	app.setShowSettings(false);	    // Don't show JME settings screen
 	
 	app.start(JmeContext.Type.Display); // Server info screen
-	
 	java.util.logging.Logger.getLogger("").setLevel(Level.SEVERE);
     }
 
@@ -70,7 +65,7 @@ public class ServerMain extends SimpleApplication implements ScreenController{
 		assetManager, inputManager, audioRenderer, guiViewPort);
 	nifty = niftyDisplay.getNifty();
 	// Turn on/off random color panels
-	nifty.setDebugOptionPanelColors(true);
+	//nifty.setDebugOptionPanelColors(false);
 
 	// Start Screen Controls
 	nifty.registerScreenController(serverControl);
@@ -82,11 +77,6 @@ public class ServerMain extends SimpleApplication implements ScreenController{
 
     @Override
     public void simpleUpdate(float tpf) {
-	if(server.getConnections().size()>0){
-	    fpsText.setText("Connected!");
-	}else{
-	    fpsText.setText("No friends!");
-	}
     }
 
     @Override
