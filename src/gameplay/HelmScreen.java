@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package gameplay;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -26,6 +26,8 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.text.DecimalFormat;
+import entities.Planet;
+import entities.Ship;
 
 /**
  *

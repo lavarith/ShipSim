@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package launcher;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -44,6 +44,7 @@ public class Game extends SimpleApplication {
     // Initialize the application
     @Override
     public void simpleInitApp() {
+	this.pauseOnFocus = false;
 	flyCam.setEnabled(false);   // turns off the silly cam follow
 
 	// Load the GUI

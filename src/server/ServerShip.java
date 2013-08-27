@@ -6,6 +6,7 @@ package server;
 
 import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +18,7 @@ public class ServerShip {
     String name;
     Vector3f location;
     int shipType;
+    ArrayList<String> crew;
     
     public ServerShip(){}
     
@@ -24,8 +26,12 @@ public class ServerShip {
 	this.name = name;
 	this.location = location;
 	this.shipType = shipType;
+	crew = new ArrayList<String>();
     }
 
+    public void addCrew(String crewAddress){
+	crew.add(crewAddress);
+    }
     public String getName() {
 	return name;
     }

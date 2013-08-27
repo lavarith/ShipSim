@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package launcher;
 
+import gameplay.HelmScreen;
 import server.ServerShipList;
 import networking.UtNetworking;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -21,11 +21,13 @@ import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import gameplay.MainViewer;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
+import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.ShipDetails;
 import server.ServerMain;
@@ -48,6 +50,11 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     Boolean connected;
     ConcurrentLinkedQueue<String> messageQueue;
     ConcurrentLinkedQueue<ArrayList> shipQueue;
+    MainViewer mainViewer;
+    ListBox<String> listBox;
+    ArrayList<ServerShip> ShipList;
+    ArrayList<ServerShipList> shipDetailsLocal;
+    String myipAddress;
 
     public StartScreen(SimpleApplication app) {
 	UtNetworking.initializables();
@@ -87,35 +94,40 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 
     public void showMessage() {
 	if ("launchScreen".equals(nifty.getCurrentScreen().getScreenId())) {
-	    String networkmessage = messageQueue.poll();
-	    
 	    // Ship ListBox Details
-	    ListBox<String> listBox;
-	    listBox = this.screen.findNiftyControl("listBox", ListBox.class);
 	    listBox.clear();
-	    
+
 	    // Add List of ships to the Ship ListBox
-	    ArrayList<ServerShipList> shipDetailsLocal = shipQueue.poll();
-	    ArrayList<ServerShip> ShipList = shipDetailsLocal.get(0).getShips();
+	    shipDetailsLocal = shipQueue.poll();
 	    if (shipDetailsLocal != null) {
-		for(ServerShip ship : ShipList){
+		ShipList = shipDetailsLocal.get(0).getShips();
+		// List all available ships
+		for (ServerShip ship : ShipList) {
 		    listBox.addItem(ship.getName());
 		}
 	    } else {
-		screen.findNiftyControl("message", Label.class).setText("No Ships");
+		// If there are no ships available
+		listBox.addItem("No Ships");
 	    }
-//	    if (networkmessage != null) {
-//		screen.findNiftyControl("message", Label.class).setText(networkmessage);
-//	    } else {
-//		screen.findNiftyControl("message", Label.class).setText("No Message.");
-//	    }
 	}
     }
     // Switch to a particular Screen
 
     public void gotoScreen(String gotoScreen) {
 	System.out.println("Going to " + gotoScreen + "!");
-	nifty.gotoScreen(gotoScreen);
+	// If screen is the Screen is the main viewer, pass the application along
+	if ("mainviewer".equals(gotoScreen)) {
+	    int shipSelected = listBox.getFocusItemIndex();
+	    ServerShip joinShip = ShipList.get(shipSelected);
+	    client.send(new AttributeMessage("servernote|" + myipAddress + " joined the " + joinShip.getName()));
+	    joinShip.addCrew(myipAddress);
+	    mainViewer = new MainViewer(app, shipSelected, client);
+	    nifty.registerScreenController(mainViewer);
+	    nifty.addXml("Interface/MainViewer.xml");
+	    nifty.gotoScreen(gotoScreen);
+	} else {
+	    nifty.gotoScreen(gotoScreen);
+	}
     }
 
     // Quit the Game!
@@ -151,6 +163,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 
     public void connectScreen() {
 	// method to run when connecting to connectScreen
+	System.out.println("Connect button");
 	if ("connectScreen".equals(nifty.getCurrentScreen().getScreenId())) {
 	    connected = false;
 	    serverIPField = screen.findNiftyControl("serverIP", TextField.class);
@@ -165,6 +178,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 
     public void launchScreen() {
 	if ("launchScreen".equals(nifty.getCurrentScreen().getScreenId())) {
+	    listBox = this.screen.findNiftyControl("listBox", ListBox.class);
 	    if (client != null) {
 		showMessage();
 	    }
@@ -177,7 +191,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	public void messageReceived(Client source, Message m) {
 	    if (m instanceof ShipDetails) {
 		ShipDetails shipDetails = (ShipDetails) m;
-		 shipQueue.add(shipDetails.getServerShips());
+		shipQueue.add(shipDetails.getServerShips());
 	    }
 	}
     }
@@ -187,7 +201,11 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	public void messageReceived(Client source, Message m) {
 	    if (m instanceof NetworkMessage) {
 		NetworkMessage message = (NetworkMessage) m;
-		messageQueue.add(message.getMessage());
+		String[] all = message.getMessage().split("\\|");
+		// IP Address Attribute
+		if ("ip".equals(all[0])) {
+		    myipAddress = all[1];
+		}
 	    }
 	}
     }

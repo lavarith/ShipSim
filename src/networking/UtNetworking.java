@@ -11,6 +11,7 @@ import com.jme3.network.serializing.Serializable;
 import com.jme3.network.serializing.Serializer;
 import java.util.ArrayList;
 import server.ServerShip;
+import server.ServerUsers;
 
 /**
  *
@@ -25,6 +26,9 @@ public class UtNetworking {
 	Serializer.registerClass(ServerShip.class);
 	Serializer.registerClass(ServerShipList.class);
 	Serializer.registerClass(ShipDetails.class);
+	Serializer.registerClass(ServerUsers.class);
+	Serializer.registerClass(UserDetails.class);
+	Serializer.registerClass(AttributeMessage.class);
     }
 
     @Serializable
@@ -63,5 +67,50 @@ public class UtNetworking {
 	public ArrayList<ServerShipList> getServerShips() {
 	    return serverShips;
 	}
+    }
+    
+    // Gets the server ship details
+    @Serializable
+    public static class UserDetails extends AbstractMessage {
+
+	private ArrayList<ServerUsers> serverUsers;
+	
+	public UserDetails() {
+	    // Initialize ship names
+	    this.serverUsers = new ArrayList<ServerUsers>();
+	}
+
+	public ArrayList<ServerUsers> getServerShips() {
+	    return serverUsers;
+	}
+	
+	public void addUser(String ipAddress){
+	    serverUsers.add(new ServerUsers(ipAddress));
+	}
+    }
+    
+        // Gets the server ship details
+    @Serializable
+    public static class AttributeMessage extends AbstractMessage {
+
+	private String attribute;
+	private String[] all;
+	
+	public AttributeMessage(){
+	}
+	// Attributes should be in the format attribute|value
+	public AttributeMessage(String attribute) {
+	    this.attribute = attribute;
+	    all = attribute.split("\\|");
+	}
+	
+	public String getAttribute(){
+	    return all[0];
+	}
+	public String getValue(){
+	    return all[1];
+	}
+
+
     }
 }

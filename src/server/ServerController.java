@@ -9,12 +9,15 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
+import com.jme3.network.Message;
+import com.jme3.network.MessageListener;
 import com.jme3.network.Server;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
+import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.ShipDetails;
 
@@ -43,25 +46,28 @@ public class ServerController extends AbstractAppState implements ScreenControll
 	ipAddresses = new ArrayList();	// List of player IP addresses.
 
 	shipList = new ShipDetails();
-	
+
 	// Listen for people joining the server
 	this.server.addConnectionListener(new ConnectionListener() {
 	    public void connectionAdded(Server server, HostedConnection conn) {
-		listBox.addItem("User connected: " + conn.getAddress());
+		addServerNote("User connected: " + conn.getAddress());
 		ipAddresses.add(conn.getAddress());
+		conn.send(new NetworkMessage("ip|"+ conn.getAddress()));
 	    }
 
 	    public void connectionRemoved(Server server, HostedConnection conn) {
-		listBox.addItem("User disconnected: " + ipAddresses.get(conn.getId()));
+		addServerNote("User disconnected: " + ipAddresses.get(conn.getId()));
 		//throw new UnsupportedOperationException("Not supported yet.");
 	    }
 	});
+	
+	// Add Data Listeners
+	server.addMessageListener(new ServerListener(), NetworkMessage.class);
+	server.addMessageListener(new ServerListener(), AttributeMessage.class);
     }
 
     @Override
     public void update(float tpf) {
-	listBox.setFocusItemByIndex(listBox.itemCount() - 1);
-	server.broadcast(new NetworkMessage("Welcome to my universe! " + tpf));
 	server.broadcast(shipList);
     }
 
@@ -73,14 +79,40 @@ public class ServerController extends AbstractAppState implements ScreenControll
 
     public void onStartScreen() {
 	System.out.println("Boom!");
-	listBox.addItem("Server started...");
+	addServerNote("Server started...");
 
 	// Generate new universe if it hasn't already
 
 	// Load existing universe
+
     }
 
     public void onEndScreen() {
 	throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addServerNote(String listItem) {
+	listBox.addItem(listItem);
+	listBox.setFocusItemByIndex(listBox.itemCount() - 1);
+    }
+
+    private class ServerListener implements MessageListener<HostedConnection> {
+
+	public void messageReceived(HostedConnection source, Message message) {
+	    if (message instanceof NetworkMessage) {
+		// do something with the message
+		NetworkMessage helloMessage = (NetworkMessage) message;
+		addServerNote(helloMessage.getMessage());
+	    }
+	    
+	    if(message instanceof AttributeMessage){
+		AttributeMessage attribute = (AttributeMessage) message;
+		
+		// respond to servernote
+		if(attribute.getAttribute().equals("servernote")){
+		    addServerNote(attribute.getValue());
+		}
+	    }
+	}
     }
 }
