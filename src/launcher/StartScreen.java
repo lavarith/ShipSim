@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.ShipDetails;
@@ -45,7 +44,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     Client client;
     HelmScreen helmControl;
     int connectCounter;
-    TextField serverIPField;
     Label connectError;
     Boolean connected;
     ConcurrentLinkedQueue<String> messageQueue;
@@ -54,7 +52,8 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     ListBox<String> listBox;
     ArrayList<ServerShip> ShipList;
     ArrayList<ServerShipList> shipDetailsLocal;
-    String myipAddress;
+    String myipAddress, ipconnect;
+    TextField serverIPField;
 
     public StartScreen(SimpleApplication app) {
 	UtNetworking.initializables();
@@ -71,11 +70,12 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
 	this.nifty = nifty;
 	this.screen = screen;
+	connectScreen();
+	launchScreen();
     }
 
     public void onStartScreen() {
-	connectScreen();    // If return to the connection screen, disconnect from server.
-	launchScreen();
+	
     }
 
     public void onEndScreen() {
@@ -136,19 +136,23 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     public void connectToServer() {
-	connectError.setText("Connecting...");
-	connected = true;
-	try {
-	    client = Network.connectToServer(serverIPField.getText(), UtNetworking.PORT);
-	    client.start();
-	    client.addMessageListener(new NetworkMessageListener());
-	    client.addMessageListener(new ShipDetailsListener());
-	    connectError.setText("");
-	    gotoScreen("launchScreen");
-	} catch (IOException ex) {
-	    connectCounter++;
-	    connectError.setText("Could not connect to server " + connectCounter + " times.");
-	    com.sun.istack.internal.logging.Logger.getLogger(ServerMain.class).log(Level.SEVERE, null, ex);
+	ipconnect = serverIPField.getText();
+	System.out.println("Text field: " + serverIPField.getText() + " Ip address:" + ipconnect);
+	if (serverIPField.getText() != null) {
+	    try {
+		connectError.setText("Attempting connection...");
+		client = Network.connectToServer(ipconnect, UtNetworking.PORT);
+		client.start();
+		client.addMessageListener(new NetworkMessageListener());
+		client.addMessageListener(new ShipDetailsListener());
+		connectError.setText("");
+		connected = true;
+		gotoScreen("launchScreen");
+	    } catch (IOException ex) {
+		connectCounter++;
+		connectError.setText("Could not connect to server " + connectCounter + " times.");
+		com.sun.istack.internal.logging.Logger.getLogger(ServerMain.class).log(Level.SEVERE, null, ex);
+	    }
 	}
     }
 
@@ -156,6 +160,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	// Return to connect screen if the server crashes or loses connection.
 	if (connected) {
 	    if (!client.isConnected()) {
+		System.out.println("Disconnecting client.");
 		gotoScreen("connectScreen");
 	    }
 	}
@@ -163,11 +168,10 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 
     public void connectScreen() {
 	// method to run when connecting to connectScreen
-	System.out.println("Connect button");
 	if ("connectScreen".equals(nifty.getCurrentScreen().getScreenId())) {
-	    connected = false;
-	    serverIPField = screen.findNiftyControl("serverIP", TextField.class);
+	    serverIPField = screen.findNiftyControl("serverip", TextField.class);
 	    connectError = screen.findNiftyControl("connectError", Label.class);
+	    connected = false;
 	    if (client != null) {
 		if (client.isConnected()) {
 		    client.close();

@@ -17,7 +17,6 @@ public class ServerUsers {
     int shipIndex;
     
     public ServerUsers(){
-	
     }
 
     public ServerUsers(String ipAddress) {

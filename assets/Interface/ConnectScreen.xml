@@ -16,7 +16,7 @@
 		<panel id="connectBox" height="20%" width="40%" childLayout="vertical">   
 		    <text text="Server URL:" font="Interface/Fonts/Default.fnt" width="100%" height="10%" wrap="true" textHAlign="left"/>
 		    <panel id="connectBox" height="70%" width="100%" childLayout="horizontal">
-			<control name="textfield" text="localhost" id="serverIP" maxLength="256" width="80%" height="100%" size="1000"></control>
+			<control name="textfield" id="serverip" maxLength="256" width="80%" height="100%" size="1000"></control>
 			<control name="button" label="Connect" id="ServerConnect" align="center" valign="center"  width="20%" height="100%">
 			    <interact onClick="connectToServer()"/>
 			</control>
