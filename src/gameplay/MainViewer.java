@@ -51,6 +51,7 @@ public class MainViewer implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
 	this.nifty = nifty;
 	this.screen = screen;
+
     }
 
     public void onStartScreen() {
@@ -58,8 +59,8 @@ public class MainViewer implements ScreenController {
 	if (shipList != null) {
 	    myShip = shipList.get(0).getShips().get(shipIndex);
 	    System.out.println(myShip.getName() + " Main Viewer");
-	    screen.findNiftyControl("mainscreenlabel", Label.class).setText(myShip.getName() + " Main Viewer");
 	}
+	nifty.setDebugOptionPanelColors(false);
 	//throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -76,5 +77,17 @@ public class MainViewer implements ScreenController {
 		shipQueue.add(shipDetails.getServerShips());
 	    }
 	}
+    }
+
+    public void gotoLayer(String layername) {
+	// Set all screen layers to invisible that aren't layername
+	String[] layers = {"helmscreen", "mainviewscreen", "weaponsscreen"};
+	for (String layer : layers) {
+	    if (!layer.equals(layername)) {
+		screen.findElementByName(layer).setVisible(false);
+	    }
+	}
+	// Set layername to visible
+	screen.findElementByName(layername).setVisible(true);
     }
 }

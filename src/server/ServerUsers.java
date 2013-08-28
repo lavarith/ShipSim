@@ -7,7 +7,6 @@ package server;
 import com.jme3.network.serializing.Serializable;
 
 /**
- *
  * @author Tony
  */
 @Serializable

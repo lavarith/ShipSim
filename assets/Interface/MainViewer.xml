@@ -4,17 +4,80 @@
        xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
-    <!-- HELM SCREEN -->
+    <!-- MAIN VIEWER SCREEN -->
     <screen id="mainviewer" controller="gameplay.MainViewer">
-	<layer id="background" childLayout="center">
-            
-	</layer>
-	<layer id="foreground" childLayout="vertical">
-	    <panel id="panel_top" height="10%" width="100%" childLayout="horizontal" backgroundColor="#000">
-		<control type="label" id="mainscreenlabel" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
+	<!-- MAIN VIEWER SCREEN -->
+	<layer id="mainviewscreen" childLayout="vertical" visible="true">
+	    <panel id="mstop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="msbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Main Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
-	    <panel id="viewscreen" height="80%" width="100%"></panel>
-	    <panel id="panel_bottom" height="10%" width="100%" childLayout="horizontal"></panel>
+	</layer>
+	<!-- HELM SCREEN -->
+	<layer id="helmscreen" childLayout="vertical" visible="false">
+	    <panel id="helmtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="helmbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Helm Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
+	    </panel>
+	</layer>
+	<!-- WEAPONS SCREEN -->
+	<layer id="weaponsscreen" childLayout="vertical" visible="false">
+	    <panel id="wntop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="wnbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Weapons Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
+	    </panel>
+	</layer>
+	<!-- SCIENCE SCREEN -->
+	<layer id="sciencescreen" childLayout="vertical" visible="false">
+	    <panel id="sctop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="scbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Science Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
+	    </panel>
+	</layer>
+	<!-- ENGINEER SCREEN -->
+	<layer id="engineerscreen" childLayout="vertical" visible="false">
+	    <panel id="engrtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="engrbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Engineering Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
+	    </panel>
+	</layer>
+	<!-- COMM SCREEN -->
+	<layer id="commscreen" childLayout="vertical" visible="false">
+	    <panel id="commtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
+	    <panel id="commbottom_panel" width="100%" height="95%" childLayout="center">
+		<text text="Communications Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
+	    </panel>
+	</layer>
+	<!-- COMMON BUTTON CONTROLS -->
+	<layer id="controls" childLayout="vertical">
+	    <panel id="panel_top" height="5%" width="100%" childLayout="horizontal" backgroundColor="#000">
+		<panel id="helmpanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Helm" id="HelmButton" align="center" valign="center">
+			<interact onClick="gotoLayer(helmscreen)"/>
+		    </control>
+		</panel>
+		<panel id="weaponpanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Weapons" id="WeaponButton" align="center" valign="center"><interact onClick="gotoLayer(weaponsscreen)"/></control>
+		</panel>
+		<panel id="sciencepanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Science" id="ScienceButton" align="center" valign="center"><interact onClick="gotoLayer(sciencescreen)"/></control>
+		</panel>
+		<panel id="engineeringpanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Engineering" id="EngineerButton" align="center" valign="center"><interact onClick="gotoLayer(engineerscreen)"/></control>
+		</panel>
+		<panel id="commpanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Comm" id="CommButton" align="center" valign="center"><interact onClick="gotoLayer(commscreen)"/></control>
+		</panel>
+		<panel id="starchartpanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Star Chart" id="StarChartButton" align="center" valign="center"><interact onClick="gotoLayer(starchartscreen)"/></control>
+		</panel>
+		<panel id="mspanel" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Main Screen" id="MainScreenButton" align="center" valign="center"><interact onClick="gotoLayer(mainviewscreen)"/></control>
+		</panel>
+		<panel id="leaveship" height="100%" width="*" childLayout="center">
+		    <control name="button" label="Quit" id="QuitButton" align="center" valign="center"></control>
+		</panel>
+	    </panel>
 	</layer>
     </screen>
     <!-- END HELM SCREEN -->
