@@ -39,6 +39,7 @@ public class Planet {
 	sphereGeo = new Geometry("Planet", circle);
 	Material circleMat = new Material(this.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 	circleMat.setColor("Color", ColorRGBA.Blue);
+	circleMat.getAdditionalRenderState().setDepthTest(false);   // Makes sure planet doesn't show through nifty
 	sphereGeo.setMaterial(circleMat);
 	sphereGeo.setLocalTranslation(position.x, position.y, 0);
     }
@@ -59,13 +60,13 @@ public class Planet {
     }
 
     public boolean isOnSensors(BoundingSphere shipSensors, Vector2f shipLocation) {
-	Sphere circle2 = new Sphere(100,100,100);
+	Sphere circle2 = new Sphere(100, 100, 100);
 	Geometry sphereGeo2 = new Geometry("Planet 2", circle2);
 	Vector2f newposition = position.subtract(shipLocation);
 	sphereGeo2.setLocalTranslation(newposition.x, newposition.y, 0);
 	CollisionResults collisionResult = new CollisionResults();
 	sphereGeo2.collideWith(shipSensors, collisionResult);
-	if (collisionResult.size()>0) {
+	if (collisionResult.size() > 0) {
 	    return true;
 	} else {
 	    return false;

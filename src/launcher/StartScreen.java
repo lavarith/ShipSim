@@ -4,9 +4,6 @@
  */
 package launcher;
 
-import gameplay.HelmScreen;
-import server.ServerShipList;
-import networking.UtNetworking;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -21,16 +18,19 @@ import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import gameplay.Helm;
 import gameplay.MainViewer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
+import networking.UtNetworking;
 import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.ShipDetails;
 import server.ServerMain;
 import server.ServerShip;
+import server.ServerShipList;
 
 /**
  *
@@ -42,7 +42,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Screen screen;
     private SimpleApplication app;
     Client client;
-    HelmScreen helmControl;
+    Helm helmControl;
     int connectCounter;
     Label connectError;
     Boolean connected;
@@ -75,7 +75,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     public void onStartScreen() {
-	
     }
 
     public void onEndScreen() {
@@ -124,7 +123,14 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	    mainViewer = new MainViewer(app, shipSelected, client);
 	    nifty.registerScreenController(mainViewer);
 	    nifty.addXml("Interface/MainViewer.xml");
+	    	    this.app.getStateManager().attach(mainViewer);
 	    nifty.gotoScreen(gotoScreen);
+	  
+
+	    // Enable the update thread
+
+	    // Set up render order
+
 	} else {
 	    nifty.gotoScreen(gotoScreen);
 	}

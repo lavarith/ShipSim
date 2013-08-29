@@ -4,10 +4,7 @@
  */
 package gameplay;
 
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -18,22 +15,18 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Slider;
-import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
-import java.text.DecimalFormat;
 import entities.Planet;
 import entities.Ship;
+import java.text.DecimalFormat;
 
 /**
  *
  * @author Tony
  */
-public class HelmScreen extends AbstractAppState implements ScreenController {
+public class Helm {
 
     private SimpleApplication app;
     private Nifty nifty;
@@ -48,8 +41,10 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
     Ship ship;
     Planet planet;
 
-    public HelmScreen(SimpleApplication app) {
+    public Helm(SimpleApplication app, Nifty nifty, Screen screen) {
 	this.app = app;
+	this.nifty = nifty;
+	this.screen = screen;
 	screenWidth = this.app.getContext().getSettings().getWidth();
 	screenHeight = this.app.getContext().getSettings().getHeight();
 
@@ -59,30 +54,15 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
 	helmDirection.setPosition(0, 0);
 
 	ship = new Ship(this.app);
-	planet = new Planet(this.app, new Vector2f(200, 200), 100);
-    }
-
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-	super.initialize(stateManager, app);
-	this.app = (SimpleApplication) app;
-	initKeys();
-    }
-
-    public void bind(Nifty nifty, Screen screen) {
-	this.nifty = nifty;
-	this.screen = screen;
-    }
-
-    public void onStartScreen() {
-	// Remove random colorization for nifty gui
-	this.nifty.setDebugOptionPanelColors(false);
+	planet = new Planet(this.app, new Vector2f(200, 300), 100);
 
 	//throw new UnsupportedOperationException("Not supported yet.");
-	topHeight = nifty.getCurrentScreen().findElementByName("panel_top").getHeight();
+    }
 
+    public void StartScreen() {
 	// Set Helm Ticks Info
-	midPanel = nifty.getCurrentScreen().findElementByName("panel_mid");
+	topHeight = nifty.getCurrentScreen().findElementByName("helmtop_panel").getHeight();
+	midPanel = nifty.getCurrentScreen().findElementByName("helmpanel_mid");
 	float helmWidth = midPanel.getHeight() / helmDirection.getLocalScale().y * helmDirection.getLocalScale().x;
 	helmDirection.setHeight(midPanel.getHeight());
 	helmDirection.setWidth(helmWidth);
@@ -93,14 +73,21 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
 	pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2 - topHeight / 2, 0);
     }
 
-    public void onEndScreen() {
-	throw new UnsupportedOperationException("Not supported yet.");
+    public void EndScreen() {
+	this.app.getGuiNode().detachAllChildren();
     }
 
-    @Override
+    // Do the data update
     public void update(float tpf) {
+	// Moves the ship
 	ship.move(tpf);
+	
+	// Updates ship components
+	ship.update(screen);
+    }
 
+    // Render images
+    public void render() {
 	// Draw planet if it's close enough
 	if (planet.isOnSensors(ship.getSensorSphere(), ship.getLocation())) {
 	    planet.drawPlanet(ship.getLocation(), planet.getPivot());
@@ -109,12 +96,10 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
 	}
 
 	// Display the compass node over everything
-	this.app.getGuiNode().attachChild(helmDirection);
 	pivot.attachChild(ship.getShipImg());
 	this.app.getGuiNode().attachChild(pivot);
-
-	// Updates ship components
-	ship.update(screen);
+	
+	this.app.getGuiNode().attachChild(helmDirection);
     }
 
     public void getRotateLocation() {
@@ -144,48 +129,27 @@ public class HelmScreen extends AbstractAppState implements ScreenController {
 	ship.setShipTurn(FastMath.abs(ship.getShipTurn()));
     }
 
-    // Warp Slider changes
-    @NiftyEventSubscriber(id = "warpSlide")
-    public void onWarpSliderChange(final String id, final SliderChangedEvent event) {
-	ship.setWarp(event.getSlider().getMax() - event.getValue());
-	if (ship.getWarp() >= 9) {
-	    warpString = "max";
-	} else {
-	    warpString = dformat.format(ship.getWarp());
-	}
-	screen.findElementByName("warpText").getRenderer(TextRenderer.class).setText(warpString);
-	System.out.println(dformat.format(ship.getWarp()));
-    }
-
-    // Impulse Slider changes
-    @NiftyEventSubscriber(id = "impulseSlide")
-    public void onImpulseSliderChange(final String id, final SliderChangedEvent event) {
-	ship.setImpulse(event.getSlider().getMax() - event.getValue());
-	impulseString = dformat.format(ship.getImpulse());
-	screen.findElementByName("impulseText").getRenderer(TextRenderer.class).setText(impulseString);
-	System.out.println(dformat.format(ship.getImpulse()));
-    }
-
     // All Stop Button
     public void onAllStopClick() {
+	System.out.println("All Stop!");
 	screen.findNiftyControl("warpSlide", Slider.class).setValue(screen.findNiftyControl("warpSlide", Slider.class).getMax());
 	screen.findNiftyControl("impulseSlide", Slider.class).setValue(screen.findNiftyControl("impulseSlide", Slider.class).getMax());
 	ship.setShipSpeed(0);
     }
 
-    private void initKeys() {
+    public void initKeys() {
 	this.app.getInputManager().addMapping("LMB", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 	this.app.getInputManager().addListener(analogListener, "LMB");
 	//this.app.getInputManager().addListener(actionListener, "LMB");
     }
-    private ActionListener actionListener = new ActionListener() {
+    public ActionListener actionListener = new ActionListener() {
 	public void onAction(String name, boolean keyPressed, float tpf) {
 	    if (name.equals("LMB")) {
 		getRotateLocation();
 	    }
 	}
     };
-    private AnalogListener analogListener = new AnalogListener() {
+    public AnalogListener analogListener = new AnalogListener() {
 	public void onAnalog(String name, float value, float tpf) {
 	    if (name.equals("LMB")) {
 		getRotateLocation();

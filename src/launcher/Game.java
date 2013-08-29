@@ -48,12 +48,16 @@ public class Game extends SimpleApplication {
 	flyCam.setEnabled(false);   // turns off the silly cam follow
 
 	// Load the GUI
+	Camera niftyCam = new Camera(settings.getWidth(), settings.getHeight());
+	ViewPort niftyViewPort = renderManager.createPostView("Nifty View", niftyCam);
 	NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
-		assetManager, inputManager, audioRenderer, guiViewPort);
+		assetManager, inputManager, audioRenderer, niftyViewPort);
+	
 	nifty = niftyDisplay.getNifty();
 	// Turn on/off random color panels
 	nifty.setDebugOptionPanelColors(true);
 
+	
 	// Start Screen Controls
 	startScreen = new StartScreen(this);
 	nifty.registerScreenController(startScreen);
@@ -63,14 +67,14 @@ public class Game extends SimpleApplication {
 	nifty.addXml("Interface/SettingsScreen.xml");
 	nifty.gotoScreen("start"); // default: "start" 
 	stateManager.attach(startScreen);
-
+	
+	//guiViewPort.addProcessor(niftyDisplay);
+	
 	guiViewPort.attachScene(guiNode);
 	guiNode.setQueueBucket(Bucket.Gui);
 
-	Camera guiCam = new Camera(settings.getWidth(), settings.getHeight());
-	ViewPort guiViewPort2 = renderManager.createPostView("Gui 2 Default", guiCam);
-	guiViewPort2.addProcessor(niftyDisplay);
-	guiViewPort2.setClearFlags(false, false, false);
+	niftyViewPort.addProcessor(niftyDisplay);
+	niftyViewPort.setClearFlags(false, false, false);
     }
 
     /* Use the main event loop to trigger repeating actions. */
