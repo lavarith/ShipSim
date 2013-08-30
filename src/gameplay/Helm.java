@@ -61,16 +61,18 @@ public class Helm {
 
     public void StartScreen() {
 	// Set Helm Ticks Info
-	topHeight = nifty.getCurrentScreen().findElementByName("helmtop_panel").getHeight();
+	//topHeight = nifty.getCurrentScreen().findElementByName("helmtop_panel").getHeight();
 	midPanel = nifty.getCurrentScreen().findElementByName("helmpanel_mid");
 	float helmWidth = midPanel.getHeight() / helmDirection.getLocalScale().y * helmDirection.getLocalScale().x;
 	helmDirection.setHeight(midPanel.getHeight());
 	helmDirection.setWidth(helmWidth);
-	helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY() - topHeight);
+	//helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY() - topHeight);
+	helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY());
 
 	// Add middle panel pivot point
 	pivot = ship.getPivot();
-	pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2 - topHeight / 2, 0);
+	//pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2 - topHeight / 2, 0);
+	pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2, 0);
     }
 
     public void EndScreen() {

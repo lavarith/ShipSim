@@ -56,7 +56,7 @@ public class MainViewer extends AbstractAppState implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
 	this.nifty = nifty;
 	this.screen = screen;
-
+	this.screen.setDefaultFocusElement("MainScreenButton");
     }
 
     public void onStartScreen() {

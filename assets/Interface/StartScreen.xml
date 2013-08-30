@@ -5,7 +5,7 @@
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
     <!-- START MENU SCREEN -->
-    <screen id="start" controller="client.StartScreen">
+    <screen id="start" controller="launcher.StartScreen">
         <layer id="background" backgroundColor="#333" childLayout="center">
             
         </layer>

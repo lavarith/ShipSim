@@ -7,133 +7,133 @@
     <!-- MAIN VIEWER SCREEN -->
     <screen id="mainviewer" controller="gameplay.MainViewer">
 	<!-- MAIN VIEWER SCREEN -->
-	<layer id="mainviewscreen" childLayout="vertical" visible="true">
-	    <panel id="mstop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="msbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="mainviewscreen" childLayout="horizontal" visible="true">
+	    <panel id="msleft_panel" width="80%" height="100%" childLayout="center">
 		<text text="Main Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="msright_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
-	<!-- HELM SCREEN -->
-	<layer id="helmscreen" childLayout="vertical" visible="false">
-	    <panel id="helmtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="helmpanel_bottom" height="95%" width="100%" childLayout="horizontal">
-		<panel id="helmpanel_left" height="100%" width="20%" childLayout="vertical" backgroundColor="#000">
-		    <panel id="shipstatus" height="40%" width="100%" childLayout="horizontal">
-			<panel id="status_spacer" height="100%" width="10%" childLayout="vertical"></panel>
-			<panel id="status_left" height="100%" width="40%" childLayout="vertical">
-			    <text text="Front Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
-			    <text text="Rear Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
-			    <text text="Hull" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
-			    <text text="Energy" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
-			</panel>
-			<panel id="status_right" height="100%" width="50%" childLayout="vertical" >
-			    <control  id="frontshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
-			    <control  id="rearshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
-			    <control  id="hullcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
-			    <control  id="energycurrent" name="label" height="10%" width="100%" textHAlign="left" />
-			</panel>
-		    </panel>
-		    <panel id="drive" height="60%" width="100%" childLayout="vertical">
-			<panel id="sliders" height="80%" width="30%" childLayout="horizontal">
-			    <panel id="spacer1" width="20%" height="100%"/>
-			    <panel id="warpBox" width="40%" height="100%" childLayout="vertical" align="center">
-				<control id="warpSlide" name="verticalSlider" height="90%" align="center" 
-					     min="0" max="9" buttonStepSize="0.5" initial="9" stepSize="0.0001"/>
-				<control id="warpText" name="label" width="100%" height="10%" text="0.0" align="center"/>
-			    </panel>
-			    <panel id="impulseBox" width="40%" height="100%" childLayout="vertical" align="center">
-				<control id="impulseSlide" name="verticalSlider" width="70%" height="90%" align="center" initial="100.0"/>
-				<control  id="impulseText" name="label" width="100%" height="10%" text="0" align="center"/>
-			    </panel>
-			</panel>
-			<panel id="allstopBox" width="30%" height="10%" childLayout="horizontal">
-			    <panel id="spacer2" width="20%" height="100%"/>
-			    <control id="allStopButton" name="button" label="All Stop" width="80%" height="100%">
-				<interact onClick="allStop()"/>
-			    </control>
-			</panel>
-		    </panel>
-		</panel>
-		<panel id="helmpanel_mid" height="100%" width="60%" childLayout="center">
-		</panel>
-		<panel id="helmpanel_right" height="100%" width="20%" childLayout="vertical" backgroundColor="#000"></panel>
-	    </panel>
-	</layer>    <!-- END HELM SCREEN -->
 	<!-- WEAPONS SCREEN -->
-	<layer id="weaponsscreen" childLayout="vertical" visible="false">
-	    <panel id="wntop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="wnbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="weaponsscreen" childLayout="horizontal" visible="false">
+	    <panel id="wnbottom_panel" width="80%" height="100%" childLayout="center">
 		<text text="Weapons Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="wntop_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
 	<!-- SCIENCE SCREEN -->
-	<layer id="sciencescreen" childLayout="vertical" visible="false">
-	    <panel id="sctop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="scbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="sciencescreen" childLayout="horizontal" visible="false">
+	    <panel id="scbottom_panel" width="80%" height="100%" childLayout="center">
 		<text text="Science Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="sctop_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
 	<!-- ENGINEER SCREEN -->
-	<layer id="engineerscreen" childLayout="vertical" visible="false">
-	    <panel id="engrtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="engrbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="engineerscreen" childLayout="horizontal" visible="false">
+	    <panel id="engrbottom_panel" width="80%" height="100%" childLayout="center">
 		<text text="Engineering Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="engrtop_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
 	<!-- COMM SCREEN -->
-	<layer id="commscreen" childLayout="vertical" visible="false">
-	    <panel id="commtop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="commbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="commscreen" childLayout="horizontal" visible="false">
+	    <panel id="commbottom_panel" width="80%" height="100%" childLayout="center">
 		<text text="Communications Screen" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="commtop_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
 	<!-- STAR CHART SCREEN -->
-	<layer id="starchartscreen" childLayout="vertical" visible="false">
-	    <panel id="sctop_panel" width="100%" height="5%" childLayout="horizontal"></panel>
-	    <panel id="scbottom_panel" width="100%" height="95%" childLayout="center">
+	<layer id="starchartscreen" childLayout="horizontal" visible="false">
+	    <panel id="scbottom_panel" width="80%" height="100%" childLayout="center">
 		<text text="Star Chart" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="center"></text>
 	    </panel>
+	    <panel id="sctop_panel" width="20%" height="100%" childLayout="horizontal"></panel>
 	</layer>
-	<!-- COMMON BUTTON CONTROLS -->
-	<layer id="controls" childLayout="vertical">
-	    <panel id="panel_top" height="5%" width="100%" childLayout="horizontal" backgroundColor="#000">
-		<panel id="helmpanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Helm" id="HelmButton" align="center" valign="center">
-			<interact onClick="gotoLayer(helmscreen)"/>
-		    </control>
+	<!-- HELM SCREEN -->
+	<layer id="helmscreen" childLayout="horizontal" visible="false">
+	    <panel id="helmpanel_left" height="100%" width="20%" childLayout="vertical" backgroundColor="#000">
+		<panel id="shipstatus" height="40%" width="100%" childLayout="horizontal">
+		    <panel id="status_spacer" height="100%" width="10%" childLayout="vertical"></panel>
+		    <panel id="status_left" height="100%" width="40%" childLayout="vertical">
+			<text text="Front Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			<text text="Rear Shield" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			<text text="Hull" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+			<text text="Energy" font="Interface/Fonts/Default.fnt" width="100%" height="10%" textHAlign="left" />
+		    </panel>
+		    <panel id="status_right" height="100%" width="50%" childLayout="vertical" >
+			<control  id="frontshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			<control  id="rearshieldcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			<control  id="hullcurrent" name="label" height="10%" width="100%" textHAlign="left"/>
+			<control  id="energycurrent" name="label" height="10%" width="100%" textHAlign="left" />
+		    </panel>
 		</panel>
-		<panel id="weaponpanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Weapons" id="WeaponButton" align="center" valign="center">
-			<interact onClick="gotoLayer(weaponsscreen)"/>
-		    </control>
+		<panel id="drive" height="60%" width="100%" childLayout="vertical">
+		    <panel id="sliders" height="80%" width="30%" childLayout="horizontal">
+			<panel id="spacer1" width="20%" height="100%"></panel>
+			<panel id="warpBox" width="40%" height="100%" childLayout="vertical" align="center">
+			    <control id="warpSlide" name="verticalSlider" height="90%" align="center" 
+					     min="0" max="9" buttonStepSize="0.5" initial="9" stepSize="0.0001"/>
+			    <control id="warpText" name="label" width="100%" height="10%" text="0.0" align="center"/>
+			</panel>
+			<panel id="impulseBox" width="40%" height="100%" childLayout="vertical" align="center">
+			    <control id="impulseSlide" name="verticalSlider" width="70%" height="90%" align="center" initial="100.0"/>
+			    <control  id="impulseText" name="label" width="100%" height="10%" text="0" align="center"/>
+			</panel>
+		    </panel>
+		    <panel id="allstopBox" width="30%" height="10%" childLayout="horizontal">
+			<panel id="spacer2" width="20%" height="100%"></panel>
+			<control id="allStopButton" name="button" label="All Stop" width="80%" height="100%">
+			    <interact onClick="allStop()"/>
+			</control>
+		    </panel>
 		</panel>
-		<panel id="sciencepanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Science" id="ScienceButton" align="center" valign="center">
-			<interact onClick="gotoLayer(sciencescreen)"/>
-		    </control>
-		</panel>
-		<panel id="engineeringpanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Engineering" id="EngineerButton" align="center" valign="center">
-			<interact onClick="gotoLayer(engineerscreen)"/>
-		    </control>
-		</panel>
-		<panel id="commpanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Comm" id="CommButton" align="center" valign="center">
-			<interact onClick="gotoLayer(commscreen)"/>
-		    </control>
-		</panel>
-		<panel id="starchartpanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Star Chart" id="StarChartButton" align="center" valign="center">
-			<interact onClick="gotoLayer(starchartscreen)"/>
-		    </control>
-		</panel>
-		<panel id="mspanel" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Main Screen" id="MainScreenButton" align="center" valign="center">
-			<interact onClick="gotoLayer(mainviewscreen)"/>
-		    </control>
-		</panel>
-		<panel id="leaveship" height="100%" width="12.5%" childLayout="center">
-		    <control name="button" label="Quit" id="QuitButton" align="center" valign="center"></control>
+	    </panel>
+	    <panel id="helmpanel_mid" height="100%" width="60%" childLayout="center"></panel>
+	    <panel id="helmscreenright_panel" width="20%" height="100%" childLayout="vertical"></panel>
+	</layer>    <!-- END HELM SCREEN -->
+	<!-- COMMON BUTTON CONTROLS AND SHIP STATUS-->
+	<layer id="controls" childLayout="horizontal">
+	    <panel id="conpanel_left" height="100%" width="80%" childLayout="vertical"></panel>
+	    <panel id="conpanel_right" height="100%" width="20%" childLayout="vertical" backgroundColor="#000">
+		<panel id="shipstatus" height="50%" width="100%" childLayout="vertical"></panel>
+		<panel id="screencontrol" height="50%" width="100%" childLayout="vertical">
+		    <panel id="helmpanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Helm" id="HelmButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(helmscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="weaponpanel"  height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Weapons" id="WeaponButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(weaponsscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="sciencepanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Science" id="ScienceButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(sciencescreen)"/>
+			</control>
+		    </panel>
+		    <panel id="engineeringpanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Engineering" id="EngineerButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(engineerscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="commpanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Comm" id="CommButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(commscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="starchartpanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Star Chart" id="StarChartButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(starchartscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="mspanel" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Main Screen" id="MainScreenButton" align="center" valign="center">
+			    <interact onClick="gotoLayer(mainviewscreen)"/>
+			</control>
+		    </panel>
+		    <panel id="leaveship" height="12.5%" width="100%" childLayout="center">
+			<control name="button" label="Quit" id="QuitButton" align="center" valign="center"></control>
+		    </panel>
 		</panel>
 	    </panel>
 	</layer>
