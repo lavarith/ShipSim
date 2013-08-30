@@ -4,7 +4,6 @@
  */
 package server;
 
-import networking.UtNetworking;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
@@ -17,6 +16,7 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.IOException;
 import java.util.logging.Level;
+import networking.UtNetworking;
 
 /**
  *

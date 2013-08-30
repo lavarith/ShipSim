@@ -98,6 +98,7 @@
 		<panel id="screencontrol" height="50%" width="100%" childLayout="vertical">
 		    <panel id="helmpanel" height="12.5%" width="100%" childLayout="center">
 			<control name="button" label="Helm" id="HelmButton" align="center" valign="center">
+
 			    <interact onClick="gotoLayer(helmscreen)"/>
 			</control>
 		    </panel>

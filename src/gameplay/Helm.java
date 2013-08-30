@@ -21,6 +21,8 @@ import de.lessvoid.nifty.screen.Screen;
 import entities.Planet;
 import entities.Ship;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import server.ServerPlanet;
 
 /**
  *
@@ -39,7 +41,8 @@ public class Helm {
     Picture helmDirection, shipImg;
     Element midPanel;
     Ship ship;
-    Planet planet;
+    ArrayList<ServerPlanet> ServerPlanets;
+    ArrayList<Planet> Planets;
 
     public Helm(SimpleApplication app, Nifty nifty, Screen screen) {
 	this.app = app;
@@ -54,24 +57,22 @@ public class Helm {
 	helmDirection.setPosition(0, 0);
 
 	ship = new Ship(this.app);
-	planet = new Planet(this.app, new Vector2f(200, 300), 100);
 
-	//throw new UnsupportedOperationException("Not supported yet.");
+	// Planet Details
+	ServerPlanets = new ArrayList<ServerPlanet>();
+	Planets = new ArrayList<Planet>();
     }
 
     public void StartScreen() {
 	// Set Helm Ticks Info
-	//topHeight = nifty.getCurrentScreen().findElementByName("helmtop_panel").getHeight();
 	midPanel = nifty.getCurrentScreen().findElementByName("helmpanel_mid");
 	float helmWidth = midPanel.getHeight() / helmDirection.getLocalScale().y * helmDirection.getLocalScale().x;
 	helmDirection.setHeight(midPanel.getHeight());
 	helmDirection.setWidth(helmWidth);
-	//helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY() - topHeight);
 	helmDirection.setPosition(midPanel.getX() + (midPanel.getWidth() - helmWidth) / 2, midPanel.getY());
 
 	// Add middle panel pivot point
 	pivot = ship.getPivot();
-	//pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2 - topHeight / 2, 0);
 	pivot.setLocalTranslation(screenWidth / 2, screenHeight / 2, 0);
     }
 
@@ -80,27 +81,36 @@ public class Helm {
     }
 
     // Do the data update
-    public void update(float tpf) {
+    public void update(float tpf, ArrayList<ServerPlanet> ServerPlanets) {
+	this.ServerPlanets = ServerPlanets;
 	// Moves the ship
 	ship.move(tpf);
-	
+
 	// Updates ship components
 	ship.update(screen);
     }
 
     // Render images
     public void render() {
-	// Draw planet if it's close enough
-	if (planet.isOnSensors(ship.getSensorSphere(), ship.getLocation())) {
-	    planet.drawPlanet(ship.getLocation(), planet.getPivot());
-	} else {
-	    planet.getPivot().detachAllChildren();
+	this.app.getGuiNode().detachAllChildren();  // Clear Helm Nodes
+	// Draw Planets if close enough
+	Planets.clear();
+	for (ServerPlanet serverplanet : ServerPlanets) {
+	    Planets.add(new Planet(app, new Vector2f(serverplanet.getLocation().x, serverplanet.getLocation().y), serverplanet.getRadius()));
 	}
+	for (Planet planet : Planets) {
+	    if (planet.isOnSensors(ship.getSensorSphere(), ship.getLocation())) {
+		planet.drawPlanet(ship.getLocation(), planet.getPivot());
+	    } else {
+		planet.getPivot().detachAllChildren();
+	    }
+	}
+
 
 	// Display the compass node over everything
 	pivot.attachChild(ship.getShipImg());
 	this.app.getGuiNode().attachChild(pivot);
-	
+
 	this.app.getGuiNode().attachChild(helmDirection);
     }
 

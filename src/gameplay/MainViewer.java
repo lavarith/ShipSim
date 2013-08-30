@@ -18,6 +18,7 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import networking.UtNetworking;
+import server.ServerPlanet;
 import server.ServerShip;
 import server.ServerShipList;
 
@@ -30,10 +31,14 @@ public class MainViewer extends AbstractAppState implements ScreenController {
     private Nifty nifty;
     private Screen screen;
     Client client;
+    // Ship Vars
     int shipIndex;
     ArrayList<ServerShipList> shipList;
     ServerShip myShip;
     ConcurrentLinkedQueue<ArrayList> shipQueue;
+    // Planets Vars
+    ArrayList<ServerPlanet> Planets;
+    ConcurrentLinkedQueue<ArrayList> planetQueue;
     // Helm Information
     Helm helm;
     String currentScreen;
@@ -51,6 +56,10 @@ public class MainViewer extends AbstractAppState implements ScreenController {
 	shipQueue = new ConcurrentLinkedQueue<ArrayList>();
 	shipList = new ArrayList<ServerShipList>();
 	myShip = new ServerShip();
+
+	// Planet Details
+	Planets = new ArrayList<ServerPlanet>();
+	planetQueue = new ConcurrentLinkedQueue<ArrayList>();
     }
 
     public void bind(Nifty nifty, Screen screen) {
@@ -78,7 +87,7 @@ public class MainViewer extends AbstractAppState implements ScreenController {
 
     @Override
     public void update(float tpf) {
-	helm.update(tpf);
+	helm.update(tpf, Planets);
 
 	renderScreen();
     }
@@ -91,6 +100,10 @@ public class MainViewer extends AbstractAppState implements ScreenController {
 	    if (m instanceof UtNetworking.ShipDetails) {
 		UtNetworking.ShipDetails shipDetails = (UtNetworking.ShipDetails) m;
 		shipQueue.add(shipDetails.getServerShips());
+	    }
+	    if (m instanceof UtNetworking.PlanetDetails) {
+		UtNetworking.PlanetDetails planetDetails = (UtNetworking.PlanetDetails) m;
+		Planets = planetDetails.getPlanets();
 	    }
 	}
     }

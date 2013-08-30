@@ -19,6 +19,7 @@ import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
 import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
+import networking.UtNetworking.PlanetDetails;
 import networking.UtNetworking.ShipDetails;
 
 /**
@@ -34,6 +35,7 @@ public class ServerController extends AbstractAppState implements ScreenControll
     int connections, newestconnection;
     ArrayList ipAddresses;
     ShipDetails shipList;
+    PlanetDetails planetList;
 
     public static void main(String[] args) {
 	UtNetworking.initializables();
@@ -46,6 +48,8 @@ public class ServerController extends AbstractAppState implements ScreenControll
 	ipAddresses = new ArrayList();	// List of player IP addresses.
 
 	shipList = new ShipDetails();
+	
+	planetList = new PlanetDetails();
 
 	// Listen for people joining the server
 	this.server.addConnectionListener(new ConnectionListener() {
@@ -69,6 +73,7 @@ public class ServerController extends AbstractAppState implements ScreenControll
     @Override
     public void update(float tpf) {
 	server.broadcast(shipList);
+	server.broadcast(planetList);
     }
 
     public void bind(Nifty nifty, Screen screen) {
