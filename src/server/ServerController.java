@@ -4,9 +4,9 @@
  */
 package server;
 
-import networking.UtNetworking;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.math.Vector3f;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
@@ -17,6 +17,7 @@ import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
+import networking.UtNetworking;
 import networking.UtNetworking.AttributeMessage;
 import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.PlanetDetails;
@@ -34,8 +35,15 @@ public class ServerController extends AbstractAppState implements ScreenControll
     ListBox<String> listBox;
     int connections, newestconnection;
     ArrayList ipAddresses;
-    ShipDetails shipList;
-    PlanetDetails planetList;
+    
+    // Server Ship Variables
+    ShipDetails shipDetails;
+    ArrayList<ServerShip> shipList;
+    
+    
+    // Server Planet Details
+    ArrayList<ServerPlanet> planetList;
+    PlanetDetails planetDetails;
 
     public static void main(String[] args) {
 	UtNetworking.initializables();
@@ -47,23 +55,6 @@ public class ServerController extends AbstractAppState implements ScreenControll
 
 	ipAddresses = new ArrayList();	// List of player IP addresses.
 
-	shipList = new ShipDetails();
-	
-	planetList = new PlanetDetails();
-
-	// Listen for people joining the server
-	this.server.addConnectionListener(new ConnectionListener() {
-	    public void connectionAdded(Server server, HostedConnection conn) {
-		addServerNote("User connected: " + conn.getAddress());
-		ipAddresses.add(conn.getAddress());
-		conn.send(new NetworkMessage("ip|"+ conn.getAddress()));
-	    }
-
-	    public void connectionRemoved(Server server, HostedConnection conn) {
-		addServerNote("User disconnected: " + ipAddresses.get(conn.getId()));
-		//throw new UnsupportedOperationException("Not supported yet.");
-	    }
-	});
 	
 	// Add Data Listeners
 	server.addMessageListener(new ServerListener(), NetworkMessage.class);
@@ -72,8 +63,7 @@ public class ServerController extends AbstractAppState implements ScreenControll
 
     @Override
     public void update(float tpf) {
-	server.broadcast(shipList);
-	server.broadcast(planetList);
+	
     }
 
     public void bind(Nifty nifty, Screen screen) {
@@ -85,10 +75,33 @@ public class ServerController extends AbstractAppState implements ScreenControll
     public void onStartScreen() {
 	System.out.println("Boom!");
 	addServerNote("Server started...");
+	
+	// Ship Details
+	shipList = new ArrayList<ServerShip>();
+	shipList.add(new ServerShip("Enterprise", Vector3f.ZERO, 0));
+	shipDetails = new ShipDetails(shipList);
+	addServerNote("Ships constructed.");
+	
+	// Planet Details
+	planetList = new ArrayList<ServerPlanet>();
+	planetList.add(new ServerPlanet(new Vector3f(200, 300, 0), 100)); // Add test planet
+	planetDetails = new PlanetDetails(planetList);
+	addServerNote("Planets materialized.");
 
-	// Generate new universe if it hasn't already
+	// Listen for people joining the server
+	this.server.addConnectionListener(new ConnectionListener() {
+	    public void connectionAdded(Server server, HostedConnection conn) {
+		addServerNote("User connected: " + conn.getAddress());
+		ipAddresses.add(conn.getAddress());
+		conn.send(new NetworkMessage("ip|"+ conn.getAddress()));
+		server.broadcast(shipDetails);
+	    }
 
-	// Load existing universe
+	    public void connectionRemoved(Server server, HostedConnection conn) {
+		addServerNote("User disconnected: " + ipAddresses.get(conn.getId()));
+		//throw new UnsupportedOperationException("Not supported yet.");
+	    }
+	});
 
     }
 
@@ -116,6 +129,10 @@ public class ServerController extends AbstractAppState implements ScreenControll
 		// respond to servernote
 		if(attribute.getAttribute().equals("servernote")){
 		    addServerNote(attribute.getValue());
+		}else if(attribute.getAttribute().equals("request")){
+		    if(attribute.getValue().equals("planets")){
+			server.broadcast(planetDetails);
+		    }
 		}
 	    }
 	}

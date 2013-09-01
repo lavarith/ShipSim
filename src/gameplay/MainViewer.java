@@ -16,11 +16,11 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import networking.UtNetworking;
+import networking.UtNetworking.AttributeMessage;
+import networking.UtNetworking.ShipDetails;
 import server.ServerPlanet;
 import server.ServerShip;
-import server.ServerShipList;
 
 /**
  * @author Tony
@@ -33,12 +33,12 @@ public class MainViewer extends AbstractAppState implements ScreenController {
     Client client;
     // Ship Vars
     int shipIndex;
-    ArrayList<ServerShipList> shipList;
+    ArrayList<ServerShip> shipList;
     ServerShip myShip;
-    ConcurrentLinkedQueue<ArrayList> shipQueue;
+
     // Planets Vars
     ArrayList<ServerPlanet> Planets;
-    ConcurrentLinkedQueue<ArrayList> planetQueue;
+    
     // Helm Information
     Helm helm;
     String currentScreen;
@@ -53,13 +53,13 @@ public class MainViewer extends AbstractAppState implements ScreenController {
 
 	// Ship Details
 	this.shipIndex = shipIndex;
-	shipQueue = new ConcurrentLinkedQueue<ArrayList>();
-	shipList = new ArrayList<ServerShipList>();
+
+	shipList = new ArrayList<ServerShip>();
 	myShip = new ServerShip();
 
 	// Planet Details
 	Planets = new ArrayList<ServerPlanet>();
-	planetQueue = new ConcurrentLinkedQueue<ArrayList>();
+	client.send(new AttributeMessage("request|planets"));
     }
 
     public void bind(Nifty nifty, Screen screen) {
@@ -69,16 +69,14 @@ public class MainViewer extends AbstractAppState implements ScreenController {
     }
 
     public void onStartScreen() {
-	shipList = shipQueue.poll();
-	if (shipList != null) {
-	    myShip = shipList.get(0).getShips().get(shipIndex);
+	if (shipList.size() > 0) {
+	    myShip = shipList.get(shipIndex);
 	    System.out.println(myShip.getName() + " Main Viewer");
 	}
 	currentScreen = "mainviewscreen"; // Initialize the start screen;
 	nifty.setDebugOptionPanelColors(false);
 	// Helm Details
 	helm = new Helm(app, nifty, screen);
-	//throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void onEndScreen() {
@@ -88,18 +86,16 @@ public class MainViewer extends AbstractAppState implements ScreenController {
     @Override
     public void update(float tpf) {
 	helm.update(tpf, Planets);
-
 	renderScreen();
     }
     //====================== SERVER CLIENT MESSAGES ======================//
-
     private class ShipDetailsListener implements MessageListener<Client> {
 	// Get list of active ships
 
 	public void messageReceived(Client source, Message m) {
 	    if (m instanceof UtNetworking.ShipDetails) {
-		UtNetworking.ShipDetails shipDetails = (UtNetworking.ShipDetails) m;
-		shipQueue.add(shipDetails.getServerShips());
+		ShipDetails shipDetails = (ShipDetails) m;
+		shipList = shipDetails.getServerShips();
 	    }
 	    if (m instanceof UtNetworking.PlanetDetails) {
 		UtNetworking.PlanetDetails planetDetails = (UtNetworking.PlanetDetails) m;

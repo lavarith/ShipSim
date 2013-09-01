@@ -30,7 +30,6 @@ import networking.UtNetworking.NetworkMessage;
 import networking.UtNetworking.ShipDetails;
 import server.ServerMain;
 import server.ServerShip;
-import server.ServerShipList;
 
 /**
  *
@@ -50,8 +49,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     ConcurrentLinkedQueue<ArrayList> shipQueue;
     MainViewer mainViewer;
     ListBox<String> listBox;
-    ArrayList<ServerShip> ShipList;
-    ArrayList<ServerShipList> shipDetailsLocal;
+    ArrayList<ServerShip> shipList;
     String myipAddress, ipconnect;
     TextField serverIPField;
 
@@ -97,11 +95,9 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	    listBox.clear();
 
 	    // Add List of ships to the Ship ListBox
-	    shipDetailsLocal = shipQueue.poll();
-	    if (shipDetailsLocal != null) {
-		ShipList = shipDetailsLocal.get(0).getShips();
+	    if (shipList != null) {
 		// List all available ships
-		for (ServerShip ship : ShipList) {
+		for (ServerShip ship : shipList) {
 		    listBox.addItem(ship.getName());
 		}
 	    } else {
@@ -117,20 +113,14 @@ public class StartScreen extends AbstractAppState implements ScreenController {
 	// If screen is the Screen is the main viewer, pass the application along
 	if ("mainviewer".equals(gotoScreen)) {
 	    int shipSelected = listBox.getFocusItemIndex();
-	    ServerShip joinShip = ShipList.get(shipSelected);
-	    client.send(new AttributeMessage("servernote|" + myipAddress + " joined the " + joinShip.getName()));
+	    ServerShip joinShip = shipList.get(shipSelected);
 	    joinShip.addCrew(myipAddress);
 	    mainViewer = new MainViewer(app, shipSelected, client);
 	    nifty.registerScreenController(mainViewer);
 	    nifty.addXml("Interface/MainViewer.xml");
-	    	    this.app.getStateManager().attach(mainViewer);
+	    this.app.getStateManager().attach(mainViewer);
+	    client.send(new AttributeMessage("servernote|" + myipAddress + " joined the " + joinShip.getName()));
 	    nifty.gotoScreen(gotoScreen);
-	  
-
-	    // Enable the update thread
-
-	    // Set up render order
-
 	} else {
 	    nifty.gotoScreen(gotoScreen);
 	}
@@ -196,12 +186,11 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     private class ShipDetailsListener implements MessageListener<Client> {
-	// Get list of active ships
-
 	public void messageReceived(Client source, Message m) {
+	    // Get list of active ships
 	    if (m instanceof ShipDetails) {
 		ShipDetails shipDetails = (ShipDetails) m;
-		shipQueue.add(shipDetails.getServerShips());
+		shipList = shipDetails.getServerShips();
 	    }
 	}
     }
